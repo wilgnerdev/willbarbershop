@@ -1,23 +1,96 @@
-const whatsappNumber = '5551999999999';
+const appUrl = 'https://sites.appbarber.com.br/willbarbershop';
 
-const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Olá! Quero marcar um horário na Will Barber Shop.')}`;
 document.querySelectorAll('.whatsapp-link').forEach((link) => {
-  link.href = whatsappUrl;
+  link.href = appUrl;
   link.target = '_blank';
   link.rel = 'noopener';
 });
 
+const testimonialData = [
+  {
+    quote: 'Melhor barbearia que já fui. O Will entende de corte como ninguém, sai de lá parecendo outra pessoa.',
+    author: 'Lucas Pereira',
+  },
+  {
+    quote: 'Atendimento impecável e o degradê ficou perfeito. Virei cliente fiel da Will Barber Shop.',
+    author: 'Bruno Almeida',
+  },
+  {
+    quote: 'Ambiente diferenciado, barbeiros que sabem o que fazem. Recomendo de olhos fechados.',
+    author: 'Thiago Souza',
+  },
+];
+
+const testimonialQuote = document.querySelector('.testimonial-copy blockquote');
+const testimonialAuthor = document.querySelector('.testimonial-copy p');
+const testimonialCopy = document.querySelector('.testimonial-copy');
+const testimonialScore = document.querySelector('.score');
+const prevTestimonialButton = document.querySelector('.testimonial-controls .circle-button[aria-label="Avaliação anterior"]');
+const nextTestimonialButton = document.querySelector('.testimonial-controls .circle-button[aria-label="Próxima avaliação"]');
+const progressItems = document.querySelectorAll('.progress-item');
+let testimonialIndex = 0;
+
+function renderTestimonial() {
+  const current = testimonialData[testimonialIndex];
+
+  testimonialCopy.classList.add('is-changing');
+  testimonialScore.classList.add('is-changing');
+
+  window.setTimeout(() => {
+    testimonialQuote.textContent = current.quote;
+    testimonialAuthor.textContent = `— ${current.author}`;
+    testimonialScore.textContent = '5.0';
+    progressItems.forEach((item, index) => item.classList.toggle('active', index === testimonialIndex));
+    testimonialCopy.classList.remove('is-changing');
+    testimonialScore.classList.remove('is-changing');
+  }, 170);
+}
+
+function changeTestimonial(direction) {
+  testimonialIndex = (testimonialIndex + direction + testimonialData.length) % testimonialData.length;
+  renderTestimonial();
+}
+
+prevTestimonialButton?.addEventListener('click', () => changeTestimonial(-1));
+nextTestimonialButton?.addEventListener('click', () => changeTestimonial(1));
+
 const menuToggle = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('.main-nav');
+const siteHeader = document.querySelector('.site-header');
 menuToggle?.addEventListener('click', () => {
   const isOpen = navigation.classList.toggle('is-open');
   menuToggle.setAttribute('aria-expanded', String(isOpen));
   menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+  siteHeader?.classList.toggle('is-hidden', false);
 });
 document.querySelectorAll('.main-nav a').forEach((link) => link.addEventListener('click', () => {
   navigation.classList.remove('is-open');
   menuToggle?.setAttribute('aria-expanded', 'false');
 }));
+
+let lastScrollY = window.scrollY;
+let scrollTicking = false;
+
+function updateHeaderVisibility() {
+  const currentScrollY = window.scrollY;
+  const menuIsOpen = navigation?.classList.contains('is-open');
+
+  if (currentScrollY <= 8 || currentScrollY < lastScrollY || menuIsOpen) {
+    siteHeader?.classList.remove('is-hidden');
+  } else if (currentScrollY > lastScrollY) {
+    siteHeader?.classList.add('is-hidden');
+  }
+
+  lastScrollY = currentScrollY;
+  scrollTicking = false;
+}
+
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    window.requestAnimationFrame(updateHeaderVisibility);
+    scrollTicking = true;
+  }
+}, { passive: true });
 
 const galleryTrack = document.querySelector('.gallery-track');
 const galleryCounter = document.querySelector('.counter b');
