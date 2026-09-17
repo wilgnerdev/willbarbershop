@@ -130,18 +130,32 @@ h2 em {
 .text-link {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   color: #bbb;
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border-bottom: 1px solid #5c5c5c;
   padding-bottom: 7px;
 }
-.text-link span {
-  font-size: 1rem;
+.text-link > span {
+  font-size: 0.76rem;
   color: var(--accent);
+}
+.text-link-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  flex-shrink: 0;
+}
+.text-link:hover .text-link-icon {
+  transform: translate(1px, -1px);
 }
 .circle-button {
   width: 38px;
@@ -1156,7 +1170,7 @@ h2 em {
   border-color: rgba(255, 255, 255, 0.72);
 }
 
-.hero .text-link span {
+.hero .text-link > span {
   color: #fff;
 }
 
