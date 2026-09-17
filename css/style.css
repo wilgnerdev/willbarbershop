@@ -147,12 +147,16 @@ h2 em {
   width: 0.8rem;
   height: 0.8rem;
   display: block;
+  color: inherit;
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
   flex-shrink: 0;
+}
+.text-link-icon path {
+  stroke: currentColor;
 }
 .text-link:hover .text-link-icon {
   transform: translate(1px, -1px);
